@@ -49,7 +49,22 @@ function Server(requestListener, opts) {
     var fileServer = new nodeStatic.Server('./node_modules/tanx-client');
 
     req.addListener('end', function () {
-      fileServer.serve(req, res);
+      fileServer.serve(req, res, function (err) {
+        if (!err) {
+          return;
+        }
+
+        if (err.status !== 200) {
+          console.warn('[GET] [%s] %s\n%s', e.status, req.url, err.message);
+        }
+
+        if (err.status === 404) {
+          fileServer.serveFile('../../public/404.html', 404, {}, req, res);
+        } else {
+          res.writeHead(err.status, err.headers);
+          res.end();
+        }
+      });
     }).resume();
 
     // Just a nicety for if this server is ever required as a module.

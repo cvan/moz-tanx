@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>TANX</title>
+    <style>
+      iframe {
+        border: 0;
+        height: 100%;
+        position: absolute;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe src="/game.html"></iframe>
+    <script>
+      (function () {
+        if (!('origin' in window.location)) {
+          window.location.origin = window.location.protocol + '//' + window.location.host;
+        }
+
+        var qsToAppend = '&ws_url=' + window.location.origin + '/socket';
+
+        var iframes = document.querySelectorAll('iframe');
+        for (var i = 0; i < iframes.length; i++) {
+          var iframe = iframes[i];
+          if (iframe.src.indexOf('&ws_url=') === -1) {
+            iframe.setAttribute('src', iframe.src + qsToAppend);
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>
