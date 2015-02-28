@@ -1,6 +1,6 @@
 {
   "name": "moz-tanx",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "tanx game with mobile gamepad support",
   "main": "app.js",
   "dependencies": {
