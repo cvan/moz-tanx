@@ -6,7 +6,7 @@
   "dependencies": {
     "node-static": "^0.7.6",
     "tanx": "cvan/tanx-1#gamepad",
-    "tanx-client": "cvan/tanx-client#fb6f372"
+    "tanx-client": "cvan/tanx-client#2ec4f63"
   },
   "scripts": {
     "start": "NODE_ENVIRONMENT=production node app.js",
