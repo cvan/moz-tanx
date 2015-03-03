@@ -38,15 +38,16 @@ function Server(requestListener, opts) {
       return;
     } 
 
-    if (req.url.split('?')[0] === '/' ||
-        req.url.substr(0, 11) === '/index.html') {
+    var url = req.url.split('?')[0];
+
+    if (url === '/' || url.substr(0, 11) === '/index.html') {
       var fileServer = new nodeStatic.Server(null, staticOpts);
       return fileServer.serveFile('./public/index.html', 200, {}, req, res);
     }
 
-    if (req.url.split('?')[0] === '/game.html') {
+    if (url === '/game.html') {
       var fileServer = new nodeStatic.Server(null, staticOpts);
-      return fileServer.serveFile('./node_modules/tanx-client/index.html',
+      return fileServer.serveFile('./node_modules/tanx-client/multi.html',
                                   200, {}, req, res);
     }
 
