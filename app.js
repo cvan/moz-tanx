@@ -26,6 +26,9 @@ function Server(requestListener, opts) {
     cache: false
   };
 
+  console.log('[%s] Server listening on http://%s:%s',
+    internals.node_env, internals.host, internals.port);
+
   return tanxServer(function (req, res) {
     // Set CORS headers.
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -36,24 +39,15 @@ function Server(requestListener, opts) {
       res.writeHead(200);
       res.end();
       return;
-    } 
-
-    var url = req.url.split('?')[0];
-
-    if (url === '/' || url.substr(0, 11) === '/index.html') {
-      var fileServer = new nodeStatic.Server(null, staticOpts);
-      return fileServer.serveFile('./public/index.html', 200, {}, req, res);
     }
 
-    if (url === '/game.html') {
-      var fileServer = new nodeStatic.Server(null, staticOpts);
-      return fileServer.serveFile('./node_modules/tanx-client/multi.html',
-                                  200, {}, req, res);
-    }
+    var fileServer = new nodeStatic.Server('./node_modules/tanx-client/',
+                                           staticOpts);
+    req.addListener('end', function (err) {
+      if (err) {
+        console.warn('[%s] [%s] %s', req.method, err.status, req.url);
+      }
 
-    var fileServer = new nodeStatic.Server('./node_modules/tanx-client', staticOpts);
-
-    req.addListener('end', function () {
       fileServer.serve(req, res);
     }).resume();
 
